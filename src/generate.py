@@ -17,7 +17,7 @@ def generate_doc(settings):
             min_offset = rnd.randint(5, 120)
             sec_offset = rnd.randint(0, 59)
             time += dtime.timedelta(minutes=min_offset, seconds=sec_offset)
-            timestamp = time.ctime()
+            timestamp = str(time)
 
             report = rnd.choice(rp.reports)
             f.write(report(timestamp, data) + '\n')

@@ -35,7 +35,7 @@ class Settings:
 
     def parse_settings(self, filepath):
         try:
-            f = open(filepath, 'r')
+            f = open(filepath, 'r', encoding='utf-8')
         except:
             print(f'    Файл {filepath} не найден. Настройки установлены по умолчанию')
             return

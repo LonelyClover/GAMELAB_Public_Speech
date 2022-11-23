@@ -10,7 +10,7 @@ settings_file = 'settings.txt'
 def generate_doc(settings):
     data = dt.Data()
 
-    with open(settings.output_file, 'w') as f:
+    with open(settings.output_file, 'w', encoding='utf-8') as f:
         time = settings.start_time
         n = settings.n_reports
         for i in range(n):

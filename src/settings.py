@@ -3,9 +3,10 @@ import datetime as dtime
 
 class Settings:
 
-    output_file = 'doc.txt'
-    n_reports = 1000
-    start_time = dtime.datetime.fromisoformat('2022-12-01 12:00:00')
+    def __init__(self):
+        self.output_file = 'doc.txt'
+        self.n_reports = 1000
+        self.start_time = dtime.datetime.fromisoformat('2022-12-01 12:00:00')
 
 
     def set_setting(self, name, value=None):
@@ -33,17 +34,24 @@ class Settings:
     
 
     def parse_settings(self, filepath):
-        with open(filepath, 'r') as f:
-            settings = [line.split(':', 1) for line in f.readlines()]
-            settings = map(lambda arr: [elem.strip() for elem in arr], settings)
+        try:
+            f = open(filepath, 'r')
+        except:
+            print(f'    Файл {filepath} не найден. Настройки установлены по умолчанию')
+            return
+            
+        settings = [line.split(':', 1) for line in f.readlines()]
+        settings = map(lambda arr: [elem.strip() for elem in arr], settings)
 
-            for setting in settings:
-                match setting:
-                    case ['']:
-                        continue
+        for setting in settings:
+            match setting:
+                case ['']:
+                    continue
 
-                    case [name, ''] | [name]:
-                        self.set_setting(name)
+                case [name, ''] | [name]:
+                    self.set_setting(name)
 
-                    case [name, value]:
-                        self.set_setting(name, value)
+                case [name, value]:
+                    self.set_setting(name, value)
+
+        f.close()

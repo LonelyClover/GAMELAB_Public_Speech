@@ -26,13 +26,8 @@ class Worker:
 class Data:
         
     def __init__(self):
-        self.first_names_m = ['Григорий', 'Лев', 'Андрей', 'Роман', 'Арсений', 'Степан', 'Владислав', 'Никита', 'Глеб', 'Марк']
-        self.first_names_f = ['Анастасия', 'Анна', 'Мария', 'Елена', 'Дарья', 'Алина', 'Ирина', 'Екатерина', 'Арина', 'Полина']
-        self.last_names = ['Смирнов', 'Иванов', 'Кузнецов', 'Соколов', 'Попов', 'Лебедев', 'Козлов', 'Новиков', 'Морозов', 'Петров']
-
         self.departments = ['маркетинга', 'стратегии', 'кадров', 'финансов', 'логистики', 'юриспруденции', 'производства']
         self.positions = ['стажёр', 'сотрудник', 'старший сотрудник', 'менеджер', 'заместитель начальника']
-        
         self.generate_salaries()
         self.generate_workers()
 
@@ -64,53 +59,53 @@ class Data:
         
     
     def generate_salaries(self):
-        self.salaries = dict()
-        for department in self.departments:
-            self.salaries[department] = dict()
+        keys = list(combine2(self.departments, self.positions))
+        self.salaries = dict(zip(keys, map(lambda x: rnd.randint(-10000, 10000), keys)))
 
+        for department in self.departments:
             for i, position in enumerate(self.positions):
-                self.salaries[department][position] = (i+1) * 30000 + rnd.randint(-10000, 10000)
+                self.salaries[(department, position)] += (i+1) * 30000
 
 
     def generate_workers(self):
+        first_names_m = ['Григорий', 'Лев', 'Андрей', 'Роман', 'Арсений', 'Степан', 'Владислав', 'Никита', 'Глеб', 'Марк']
+        first_names_f = ['Анастасия', 'Анна', 'Мария', 'Елена', 'Дарья', 'Алина', 'Ирина', 'Екатерина', 'Арина', 'Полина']
+        last_names = ['Смирнов', 'Иванов', 'Кузнецов', 'Соколов', 'Попов', 'Лебедев', 'Козлов', 'Новиков', 'Морозов', 'Петров']
+        
         self.workers = [];
-        for last_name in self.last_names:
-            for first_name in self.first_names_m:
+        for last_name in last_names:
+            for first_name in first_names_m:
                 name = f'{last_name} {first_name}'
                 department = rnd.choice(self.departments)
                 position = rnd.choice(self.positions)
-                salary = self.salaries[department][position]
+                salary = self.salaries[(department, position)]
 
                 self.workers.append(Worker(name, department, position, salary))
 
-            for first_name in self.first_names_f:
+            for first_name in first_names_f:
                 name = f'{last_name}а {first_name}'
                 department = rnd.choice(self.departments)
                 position = rnd.choice(self.positions)
-                salary = self.salaries[department][position]
+                salary = self.salaries[(department, position)]
 
                 self.workers.append(Worker(name, department, position, salary))
 
     
     def generate_eq_prices(self):
         keys = list(combine2(self.companies.values(), self.equipments))
-        self.eq_prices = dict(zip(keys, 
-                                  map(lambda x: rnd.uniform(50000.00, 1000000.00), keys)))
+        self.eq_prices = dict(zip(keys, map(lambda x: rnd.uniform(50000.00, 1000000.00), keys)))
 
 
     def generate_eq_transfer_prices(self):
         keys = list(combine3(self.rigs, self.equipments, self.transfer_ways))
-        self.eq_transfer_prices = dict(zip(keys, 
-                                  map(lambda x: rnd.uniform(20000.00, 100000.00), keys)))
+        self.eq_transfer_prices = dict(zip(keys, map(lambda x: rnd.uniform(20000.00, 100000.00), keys)))
         
     
     def generate_oil_transfer_prices(self):
         keys = list(combine2(self.rigs, self.storages))
-        self.oil_transfer_prices = dict(zip(keys, 
-                                  map(lambda x: rnd.uniform(5.00, 50.00), keys)))
+        self.oil_transfer_prices = dict(zip(keys, map(lambda x: rnd.uniform(5.00, 50.00), keys)))
         
     
     def generate_ad_prices(self):
         keys = list(combine2(self.countries, self.ad_types))
-        self.ad_prices = dict(zip(keys, 
-                                  map(lambda x: rnd.uniform(1000000.00, 10000000.00), keys)))
+        self.ad_prices = dict(zip(keys, map(lambda x: rnd.uniform(1000000.00, 10000000.00), keys)))

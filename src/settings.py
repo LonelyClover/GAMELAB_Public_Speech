@@ -12,8 +12,11 @@ class Settings:
     def set_setting(self, name, value=None):
         match name:
             case 'Выходной файл':
-                self.output_file = value
-                print(f'    Выходной файл установлен: "{self.output_file}"')
+                if value is not None:
+                    self.output_file = value
+                    print(f'    Выходной файл установлен: "{self.output_file}"')
+                else:
+                    print(f'    Неверный формат. Настройка "{name}" установлена по умолчанию')
 
             case 'Число отчётов':
                 try:
